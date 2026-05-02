@@ -3,592 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MAHMUD ULASHEV.EXE — Portfolio</title>
+<title>MAHMUD ULASHEV — Web Dasturchi</title>
+<meta name="description" content="Mahmud Ulashev — Zamonaviy landing sahifalar, web ilovalar va optimallashtirish xizmatlarini taqdim etuvchi web dasturchi. Samarkand, O'zbekiston.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%23FFD700'/><rect x='2' y='2' width='12' height='12' fill='%23000'/><rect x='4' y='4' width='2' height='8' fill='%23FFD700'/><rect x='8' y='4' width='2' height='8' fill='%23FFD700'/><rect x='6' y='6' width='4' height='2' fill='%23FFD700'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/xterm@5.3.0/css/xterm.css">
-
 <script src="https://unpkg.com/xterm@5.3.0/lib/xterm.js"></script>
-<style>
-:root{
-  --y:#FFD700;--ya:#AA8800;--r:#CC1111;--b:#1155CC;--g:#22AA44;
-  --dark:#0B0B1A;--darker:#060610;--panel:#0F0F22;
-  --txt:#F0F0E8;--muted:#777766;--border:#2a2a3a;
-  --px:'Press Start 2P',monospace;
-}
-*{box-sizing:border-box;margin:0;padding:0;image-rendering:pixelated;}
-html{scroll-behavior:smooth;}
-body{background:var(--dark);color:var(--txt);font-family:var(--px);overflow-x:hidden;font-size:13px;}
-@supports (zoom:1){
-  body{zoom:1.14;}
-}
-#siteStage{
-  min-height:100vh;will-change:transform;
-}
- 
-/* ── SPLASH ──────────────────────────────────────────── */
-#splash{
-  position:fixed;inset:0;background:var(--darker);z-index:9999;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  cursor:pointer;user-select:none;
-}
-#splash h1{font-size:clamp(18px,4vw,36px);color:var(--y);text-shadow:4px 4px 0 var(--ya);letter-spacing:4px;margin-bottom:12px;}
-.splash-sub{color:var(--g);font-size:9px;letter-spacing:3px;margin-bottom:26px;}
-.blink{animation:blink 1s step-end infinite;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.press-start{color:var(--txt);font-size:clamp(9px,2vw,13px);letter-spacing:2px;line-height:1.9;text-align:center;max-width:90vw;opacity:0;}
-#splash.ready .press-start{opacity:1;}
-.splash-bricks{display:flex;gap:6px;margin:28px 0;}
-.rain{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
-.mario-loader{
-  width:min(420px,84vw);height:76px;position:relative;margin:16px 0 30px;
-}
-.mario-track{
-  position:absolute;left:0;right:0;bottom:0;height:24px;
-  display:grid;grid-template-columns:repeat(12,1fr);gap:3px;
-}
-.mario-block{
-  background:#B76A16;border:3px solid #5C3010;
-  box-shadow:inset 0 4px 0 rgba(255,255,255,.18),0 4px 0 #000;
-}
-.mario-block:nth-child(3n){background:#D99522;}
-.mario-runner{
-  position:absolute;left:0;bottom:26px;width:28px;height:34px;
-  animation:marioRun 2.4s steps(10,end) forwards;
-}
-.mario-runner::before{
-  content:'';position:absolute;left:8px;top:0;width:14px;height:12px;background:#FFD700;
-  box-shadow:
-    0 12px 0 #CC1111,
-    -6px 22px 0 #1155CC,
-    8px 22px 0 #1155CC,
-    -8px 12px 0 #CC1111,
-    16px 12px 0 #CC1111,
-    2px -6px 0 #5C3010,
-    8px -6px 0 #5C3010;
-}
-.mario-coin{
-  position:absolute;right:4px;top:5px;color:var(--y);font-size:18px;
-  animation:coinPop .55s step-end infinite;
-}
-.mario-fill{
-  position:absolute;left:0;bottom:0;height:24px;width:0;
-  background:rgba(255,215,0,.18);animation:marioFill 2.4s steps(12,end) forwards;
-}
-@keyframes marioRun{to{left:calc(100% - 28px);}}
-@keyframes marioFill{to{width:100%;}}
-@keyframes coinPop{50%{transform:translateY(-8px);opacity:.45;}}
- 
-/* ── LEGO BRICK ──────────────────────────────────────── */
-.lb{
-  display:inline-block;width:52px;height:26px;border-radius:3px;
-  position:relative;flex-shrink:0;
-  box-shadow:inset 0 -5px 0 rgba(0,0,0,.3),0 5px 0 rgba(0,0,0,.45);
-}
-.lb::before{
-  content:'';position:absolute;
-  top:-10px;left:50%;transform:translateX(-50%);
-  width:22px;height:13px;border-radius:50%;
-  background:inherit;box-shadow:inset 0 -2px 0 rgba(0,0,0,.2);
-}
-.lb.sm{width:36px;height:20px;}
-.lb.sm::before{width:16px;height:10px;top:-8px;}
- 
-/* ── HEADER / HUD ────────────────────────────────────── */
-header{
-  position:fixed;top:0;width:100%;background:var(--darker);
-  border-bottom:4px solid var(--y);z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:16px 34px;
-}
-.hud-logo{color:var(--y);font-size:15px;text-shadow:2px 2px 0 var(--ya);}
-nav{display:flex;gap:24px;}
-nav a{color:var(--txt);text-decoration:none;font-size:9px;transition:color .1s;}
-nav a:hover{color:var(--y);}
-.lives{display:flex;gap:5px;align-items:center;}
-.heart{color:#FF4455;font-size:15px;}
- 
-/* ── SECTION COMMON ──────────────────────────────────── */
-.wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
-section{padding:110px 32px 90px;max-width:1180px;margin:0 auto;}
-.sec-title{
-  color:var(--y);font-size:clamp(15px,2.5vw,21px);
-  margin-bottom:44px;text-shadow:3px 3px 0 var(--ya);
-  display:flex;align-items:center;gap:14px;
-}
-.sec-title::before{content:'>';color:var(--g);}
- 
-/* ── PX BUTTON ───────────────────────────────────────── */
-.px-btn{
-  background:var(--y);color:#000;padding:16px 24px;
-  font-family:var(--px);font-size:10px;border:none;cursor:pointer;
-  box-shadow:4px 4px 0 #000;text-decoration:none;display:inline-block;
-  transition:transform .08s,box-shadow .08s;
-}
-.px-btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 #000;}
-.px-btn.out{background:transparent;color:var(--y);border:3px solid var(--y);}
-.px-btn.out:hover{background:rgba(255,215,0,.08);}
- 
-/* ── PIXEL BOX ───────────────────────────────────────── */
-.pbox{border:3px solid var(--border);box-shadow:4px 4px 0 #000;background:var(--panel);}
- 
-/* ── HERO ────────────────────────────────────────────── */
-#hero{
-  min-height:100vh;display:flex;flex-direction:column;
-  justify-content:center;align-items:center;text-align:center;
-  padding:92px 20px 150px;position:relative;overflow:hidden;
-}
-.hero-bg{position:absolute;inset:0;}
-.iso-grid{
-  position:absolute;inset:0;opacity:.12;
-  background-image:
-    linear-gradient(30deg,var(--y) .5px,transparent .5px),
-    linear-gradient(-30deg,var(--y) .5px,transparent .5px),
-    linear-gradient(90deg,rgba(255,215,0,.3) .5px,transparent .5px);
-  background-size:48px 28px,48px 28px,48px 28px;
-}
-.scanlines{
-  position:absolute;inset:0;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.08) 2px,rgba(0,0,0,.08) 4px);
-  pointer-events:none;
-}
-.hero-rain{
-  position:absolute;inset:-120px 0 0;overflow:hidden;pointer-events:none;
-  z-index:1;opacity:.9;
-}
-.hero-rain .fall-brick{
-  position:absolute;top:-90px;left:var(--x);
-  width:var(--w);height:calc(var(--w) * .48);
-  background:var(--c);border-radius:3px;
-  box-shadow:inset 0 -6px 0 rgba(0,0,0,.32),0 6px 0 rgba(0,0,0,.32);
-  animation:heroBrickFall var(--dur) linear var(--delay) infinite;
-  opacity:var(--op);will-change:transform;
-}
-.hero-rain .fall-brick::before{
-  content:'';position:absolute;top:calc(var(--w) * -.18);left:50%;
-  width:calc(var(--w) * .42);height:calc(var(--w) * .24);
-  transform:translateX(-50%);border-radius:50%;background:inherit;
-  box-shadow:inset 0 -2px 0 rgba(0,0,0,.2);
-}
-@keyframes heroBrickFall{
-  0%{transform:translate3d(0,-12vh,0) rotate(0deg);}
-  30%{transform:translate3d(var(--drift),32vh,0) rotate(130deg);}
-  65%{transform:translate3d(calc(var(--drift) * -0.35),74vh,0) rotate(260deg);}
-  100%{transform:translate3d(var(--drift-end),118vh,0) rotate(390deg);}
-}
-.hero-content{position:relative;z-index:2;}
-.hero-tag{color:var(--g);font-size:10px;margin-bottom:18px;letter-spacing:3px;}
-.hero-title{
-  font-size:clamp(42px,6.8vw,78px);color:var(--txt);
-  text-shadow:5px 5px 0 rgba(0,0,0,.6);margin-bottom:6px;line-height:1.3;
-}
-.hero-title .acc{color:var(--y);}
-.hero-sub{color:var(--muted);font-size:11px;margin-bottom:38px;letter-spacing:2px;line-height:2;}
-.hero-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
-.iso-blocks{
-  position:absolute;bottom:0;left:0;right:0;height:135px;
-  display:flex;align-items:flex-end;justify-content:center;gap:0;
-  padding-bottom:8px;
-  z-index:2;
-}
- 
-/* ── ABOUT ───────────────────────────────────────────── */
-.about-grid{display:grid;grid-template-columns:260px 1fr;gap:48px;align-items:start;}
-.char-card{
-  border:4px solid var(--y);box-shadow:6px 6px 0 var(--ya);
-  padding:24px 20px;background:var(--panel);text-align:center;
-}
-.char-avatar{
-  width:170px;height:286px;margin:0 auto 16px;display:flex;
-  align-items:flex-end;justify-content:center;
-  background:
-    linear-gradient(45deg,rgba(255,255,255,.05) 25%,transparent 25%),
-    linear-gradient(-45deg,rgba(255,255,255,.05) 25%,transparent 25%),
-    linear-gradient(45deg,transparent 75%,rgba(255,255,255,.05) 75%),
-    linear-gradient(-45deg,transparent 75%,rgba(255,255,255,.05) 75%);
-  background-size:18px 18px;background-position:0 0,0 9px,9px -9px,-9px 0;
-  border:2px solid rgba(255,215,0,.22);
-  box-shadow:inset 0 -10px 0 rgba(0,0,0,.18);
-}
-#charCanvas{display:block;width:132px;height:250px;}
-.char-name{color:var(--y);font-size:12px;margin-bottom:6px;}
-.char-class{color:var(--g);font-size:8px;margin-bottom:16px;letter-spacing:2px;}
-.char-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;text-align:left;}
-.cs{font-size:8px;color:var(--muted);line-height:1.8;}
-.cs span{color:var(--txt);display:block;font-size:10px;}
-.about-desc{color:var(--muted);font-size:10px;line-height:2.25;margin-bottom:24px;}
-.skill-row{margin-bottom:14px;}
-.skill-lbl{display:flex;justify-content:space-between;margin-bottom:7px;font-size:9px;}
-.skill-lbl b{color:var(--txt);}
-.skill-lbl em{color:var(--y);font-style:normal;}
-.skill-track{height:14px;background:#111;border:2px solid #222;}
-.skill-fill{height:100%;width:0;transition:width 1.4s cubic-bezier(.4,0,.2,1);}
- 
-/* ── STATS ROW ───────────────────────────────────────── */
-.stats-row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:0 0 80px;}
-.sbox{
-  border:3px solid var(--y);box-shadow:4px 4px 0 var(--ya);
-  padding:20px 28px;text-align:center;background:var(--panel);
-  flex:1;min-width:130px;
-}
-.sbox-num{color:var(--y);font-size:26px;display:block;margin-bottom:8px;}
-.sbox-lbl{font-size:8px;color:var(--muted);line-height:1.7;}
-
-/* ── SERVICE / PROCESS ───────────────────────────────── */
-.kit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
-.kit-card,.step-card{
-  border:3px solid var(--border);box-shadow:4px 4px 0 #000;
-  background:var(--panel);padding:24px 20px;position:relative;overflow:hidden;
-}
-.kit-card::after,.step-card::after{
-  content:'';position:absolute;right:-16px;bottom:-16px;
-  width:52px;height:30px;border-radius:3px;background:rgba(255,215,0,.08);
-  box-shadow:inset 0 -6px 0 rgba(0,0,0,.18);
-}
-.kit-ico{font-size:18px;display:block;margin-bottom:14px;}
-.kit-title,.step-title{color:var(--txt);font-size:11px;margin-bottom:12px;line-height:1.8;}
-.kit-desc,.step-desc{color:var(--muted);font-size:8px;line-height:2.15;}
-.step-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
-.step-num{color:var(--y);font-size:11px;margin-bottom:12px;display:block;}
-
-/* ── EXPERIENCE ────────────────────────────────────────────── */
-.exp-grid{display:grid;grid-template-columns:1fr;gap:32px;max-width:900px;margin:0 auto;}
-.exp-item{
-  border:3px solid var(--border);box-shadow:4px 4px 0 #000;
-  padding:24px 20px;background:var(--panel);position:relative;
-}
-.exp-item::before{
-  content:'';position:absolute;top:12px;left:12px;
-  width:8px;height:8px;background:var(--g);border-radius:50%;
-}
-.exp-year{color:var(--y);font-size:9px;margin-bottom:8px;}
-.exp-role{color:var(--txt);font-size:12px;margin-bottom:6px;}
-.exp-company{color:var(--muted);font-size:8px;margin-bottom:12px;}
-.exp-desc{color:var(--muted);font-size:9px;line-height:2.15;}
-.world-map{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
-.lvl{
-  border:3px solid var(--border);box-shadow:4px 4px 0 #000;
-  padding:22px 18px;cursor:pointer;background:var(--panel);
-  transition:border-color .15s,transform .1s,box-shadow .1s;
-  position:relative;overflow:hidden;
-}
-.lvl:hover{border-color:var(--y);transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ya);}
-.lvl-badge{
-  position:absolute;top:12px;right:12px;
-  background:var(--y);color:#000;padding:3px 8px;font-size:7px;
-}
-.lvl-num{font-size:10px;color:var(--y);margin-bottom:10px;display:block;}
-.lvl-title{color:var(--txt);font-size:13px;margin-bottom:12px;}
-.lvl-desc{color:var(--muted);font-size:9px;line-height:2.05;margin-bottom:14px;}
-.lvl-tag{
-  display:inline-block;border:2px solid var(--border);
-  padding:3px 8px;font-size:7px;color:var(--muted);margin-right:4px;margin-bottom:4px;
-}
-.lvl-link{color:var(--g);font-size:9px;text-decoration:none;display:block;margin-top:10px;}
-.lvl-link:hover{text-decoration:underline;}
- 
-/* ── DIALOGUE ────────────────────────────────────────── */
-#dlg{
-  display:none;position:fixed;bottom:80px;left:50%;
-  transform:translateX(-50%);width:min(520px,92vw);
-  background:var(--panel);border:4px solid var(--y);
-  box-shadow:6px 6px 0 var(--ya);padding:22px;z-index:500;
-}
-#dlg.on{display:block;}
-.dlg-close{position:absolute;top:10px;right:14px;cursor:pointer;color:var(--y);font-size:12px;}
-.dlg-title{color:var(--y);font-size:10px;margin-bottom:12px;}
-.dlg-body{color:var(--muted);font-size:8px;line-height:2.2;margin-bottom:16px;}
-.dlg-arrow{color:var(--g);font-size:7px;animation:blink 1s step-end infinite;}
- 
-/* ── INVENTORY / SKILLS ──────────────────────────────── */
-.inv-grid{display:flex;flex-wrap:wrap;gap:10px;}
-.inv-item{
-  border:2px solid var(--border);box-shadow:3px 3px 0 #000;
-  padding:12px 16px;font-size:8px;color:var(--y);
-  background:var(--panel);cursor:default;
-  transition:border-color .1s,transform .1s;
-}
-.inv-item:hover{border-color:var(--y);transform:translate(-1px,-1px);}
- 
-/* ── SNAKE GAME ──────────────────────────────────────── */
-#game{text-align:center;}
-.game-wrap{
-  display:inline-block;border:4px solid var(--y);
-  box-shadow:6px 6px 0 var(--ya);background:#000;
-}
-.game-hud{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:10px 16px;background:#000;border-bottom:2px solid #222;
-  font-size:10px;gap:14px;
-}
-.game-msg{color:var(--muted);font-size:7px;}
-#snakeCanvas{display:block;width:min(500px,92vw);height:auto;}
-.game-ctrl{
-  margin-top:14px;font-size:7px;color:var(--muted);
-  display:flex;justify-content:center;gap:20px;flex-wrap:wrap;
-}
-/* mobile game buttons */
-.dpad{display:none;margin-top:16px;justify-content:center;}
-.dpad-grid{display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(3,44px);gap:4px;}
-.dpad-btn{
-  background:var(--panel);border:2px solid var(--y);color:var(--y);
-  font-family:var(--px);font-size:12px;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-}
-.dpad-btn:active{background:var(--y);color:#000;}
- 
-/* ── FLAPPY BRICKS GAME ──────────────────────────────── */
-#flappy-section{text-align:center;padding-top:0;}
-.flappy-wrap{
-  display:inline-block;border:4px solid var(--b);
-  box-shadow:6px 6px 0 #0033AA;background:#000;
-}
-.flappy-hud{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:10px 16px;background:#000;border-bottom:2px solid #111;font-size:10px;gap:14px;
-}
-#flappyCanvas{display:block;width:min(540px,92vw);height:auto;}
- 
-/* ── CONTACT ─────────────────────────────────────────── */
-#contact{text-align:center;}
-.coin{font-size:38px;display:inline-block;animation:coinspin 2s ease-in-out infinite;}
-@keyframes coinspin{0%,100%{transform:rotateY(0deg) scale(1)}50%{transform:rotateY(90deg) scale(.1)}}
-.contact-title{color:var(--y);font-size:clamp(10px,2vw,15px);margin:16px 0 8px;line-height:1.8;}
-.contact-sub{color:var(--muted);font-size:9px;margin-bottom:36px;line-height:2;}
-.contact-links{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:40px;}
-.ci{
-  border:3px solid var(--y);box-shadow:4px 4px 0 var(--ya);
-  padding:18px 20px;background:var(--panel);text-decoration:none;
-  color:var(--txt);font-size:8px;transition:transform .1s;
-  display:flex;flex-direction:column;align-items:center;gap:10px;
-  min-width:150px;
-}
-.ci:hover{transform:translate(-2px,-2px);}
-.ci .ci-label{color:var(--muted);font-size:7px;}
-.ci .ci-icon{font-size:20px;}
- 
-/* ── FOOTER ──────────────────────────────────────────── */
-footer{
-  border-top:4px solid var(--y);padding:24px 32px;
-  text-align:center;color:var(--muted);font-size:7px;line-height:2.5;
-}
- 
-/* ── PIXEL CURSOR ────────────────────────────────────── */
-body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Crect x='0' y='0' width='4' height='16' fill='%23FFD700'/%3E%3Crect x='0' y='0' width='16' height='4' fill='%23FFD700'/%3E%3C/svg%3E") 0 0,crosshair;}
- 
-/* ── TERMINAL ────────────────────────────────────────────── */
-#terminal-container{
-  width:100%;max-width:800px;margin:0 auto;height:420px;
-  overflow:hidden;border-radius:6px;
-  background:#02060b;
-  box-shadow:0 0 30px rgba(0,128,255,.12);
-}
-#terminal-container .xterm,
-#terminal-container .xterm-helpers,
-#terminal-container .xterm-screen {
-  font-family:'Roboto Mono', Roboto, Menlo, Consolas, 'Courier New', monospace !important;
-  color:#D6FCFF !important;
-  background:#02060b !important;
-  line-height:1.5 !important;
-  letter-spacing:.02em !important;
-  font-size:15px !important;
-  text-shadow:none !important;
-}
-#terminal-container .xterm-viewport {
-  padding:14px !important;
-  background:rgba(0,0,0,.95) !important;
-}
-#terminal-container .xterm-rows,
-#terminal-container .xterm-cursor {
-  color:#D6FCFF !important;
-}
-#terminal-container .xterm-viewport::-webkit-scrollbar {
-  width:10px;
-}
-#terminal-container .xterm-viewport::-webkit-scrollbar-thumb {
-  background:rgba(255,255,255,.3);
-  border-radius:6px;
-}
-#terminal-container .xterm-viewport::-webkit-scrollbar-track {
-  background:rgba(255,255,255,.05);
-}
-
-@media(max-width:700px){
-  @supports (zoom:1){body{zoom:1;}}
-  header{padding:12px 14px;}
-  nav{display:none;}
-  section{padding:80px 16px 60px;}
-  .about-grid{grid-template-columns:1fr;}
-  .world-map{grid-template-columns:1fr;}
-  #hero{padding-bottom:90px;}
-  .hero-title{font-size:36px;}
-  .hero-sub{font-size:8px;}
-  .dpad{display:flex;}
-  .game-ctrl{display:none;}
-  .iso-blocks{display:none;}
-  .stats-row{gap:10px;}
-  .exp-grid{gap:24px;}
-  .kit-grid,.step-grid{grid-template-columns:1fr;}
-  .hero-rain .fall-brick{opacity:.45;}
-  .game-hud,.flappy-hud{font-size:7px;align-items:flex-start;line-height:1.8;}
-}
-
-@media(max-width:980px){
-  header{padding:14px 18px;}
-  nav{gap:12px;}
-  nav a{font-size:7px;}
-  .hud-logo{font-size:12px;}
-}
- 
-/* ── SCROLL REVEAL ───────────────────────────────────── */
-.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s;}
-.reveal.visible{opacity:1;transform:none;}
-
-/* ── EASTER EGGS ────────────────────────────────────── */
-#eggToast{
-  position:fixed;right:22px;bottom:22px;z-index:900;
-  width:min(360px,calc(100vw - 32px));background:var(--panel);
-  border:3px solid var(--y);box-shadow:5px 5px 0 #000;
-  padding:16px 18px;transform:translateY(24px);opacity:0;
-  pointer-events:none;transition:opacity .2s,transform .2s;
-}
-#eggToast.on{opacity:1;transform:none;}
-.egg-title{color:var(--y);font-size:9px;margin-bottom:8px;line-height:1.8;}
-.egg-body{color:var(--muted);font-size:7px;line-height:2;}
-#eggOverlay{position:fixed;inset:0;z-index:850;pointer-events:none;overflow:hidden;}
-.egg-glyph{
-  position:absolute;top:-40px;color:var(--g);font-size:13px;
-  text-shadow:0 0 8px currentColor;animation:eggFall var(--dur) linear forwards;
-}
-.egg-spark{
-  position:absolute;width:8px;height:8px;background:var(--y);
-  box-shadow:0 0 14px var(--y);animation:eggSpark .9s steps(6,end) forwards;
-}
-body.anime-mode{
-  color: #FFD700;
-}
-body.anime-mode::before,
-body.force-mode::before,
-body.jjk-mode::before{
-  content:'';
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:999;
-  opacity:0.42;
-}
-body.anime-mode::before{
-  background: radial-gradient(circle at top, rgba(255,215,0,0.35), rgba(0,0,0,0.12) 40%),
-              linear-gradient(135deg, rgba(200,180,0,0.18), transparent 65%);
-  mix-blend-mode: screen;
-}
-body.force-mode::before{
-  background: radial-gradient(circle at center, rgba(34,170,255,0.32), rgba(0,0,0,0.12) 40%),
-              linear-gradient(160deg, rgba(60,200,255,0.18), transparent 60%);
-  mix-blend-mode: screen;
-}
-body.jjk-mode::before{
-  background: radial-gradient(circle at top left, rgba(143,0,255,0.35), rgba(10,0,30,0.12) 45%),
-              linear-gradient(120deg, rgba(180,60,255,0.22), transparent 55%);
-  mix-blend-mode: screen;
-}
-body.anime-mode *{
-  color: #FFD700 !important;
-}
-body.anime-mode .hero-title{animation:animePulse .5s step-end 6;text-shadow:7px 7px 0 #000,0 0 18px var(--y);}
-body.force-mode{
-  color: #A8E1FF;
-}
-body.force-mode *{
-  color: #A8E1FF !important;
-}
-body.jjk-mode{
-  color: #E2C1FF;
-}
-body.jjk-mode *{
-  color: #E2C1FF !important;
-}
-body.move67-mode #siteStage{animation:move67Site .58s steps(8,end) 10;}
-body.force-mode #hero::after{
-  content:'';position:absolute;left:-20%;right:-20%;top:45%;height:5px;
-  background:#22AAFF;box-shadow:0 0 18px #22AAFF,0 0 34px #22AAFF;
-  transform:rotate(-8deg);animation:forceSweep 1.1s ease-out forwards;z-index:3;
-}
-.anime-stars{
-  position:fixed;top:20%;left:20%;font-size:28px;animation:floatStars 6s infinite ease-in-out;
-  pointer-events:none;z-index:1000;color:#FFD700;text-shadow:0 0 10px #FFD700;
-}
-.force-lightning{
-  position:fixed;top:30%;right:20%;font-size:32px;animation:lightningFlash 1s infinite;
-  pointer-events:none;z-index:1000;color:#22AAFF;text-shadow:0 0 15px #22AAFF;
-}
-.jjk-orbs{
-  position:fixed;bottom:20%;left:30%;font-size:24px;animation:orbFloat 4s infinite ease-in-out;
-  pointer-events:none;z-index:1000;color:#E2C1FF;text-shadow:0 0 12px #E2C1FF;
-}
-.konami-rainbow{
-  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-size:20px;animation:rainbowSpin 3s infinite linear;
-  pointer-events:none;z-index:1000;
-}
-.falling-42{
-  position:fixed;top:-50px;font-size:18px;animation:fall42 5s infinite linear;
-  pointer-events:none;z-index:1000;color:#FFD700;
-}
-@keyframes eggFall{to{transform:translateY(110vh);opacity:0;}}
-@keyframes eggSpark{to{transform:translate(var(--dx),var(--dy));opacity:0;}}
-@keyframes animePulse{50%{transform:scale(1.025);color:var(--y);}}
-@keyframes floatStars{0%,100%{transform:translateY(0) rotate(0deg)}50%{transform:translateY(-30px) rotate(360deg)}}
-@keyframes lightningFlash{0%,100%{opacity:0}50%{opacity:1}}
-@keyframes orbFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-20px) scale(1.2)}}
-@keyframes rainbowSpin{0%{transform:translate(-50%,-50%) rotate(0deg)}100%{transform:translate(-50%,-50%) rotate(360deg)}}
-@keyframes fall42{0%{top:-50px;opacity:1}100%{top:100vh;opacity:0}}
-@keyframes move67Site{
-  0%,100%{transform:translateY(0);}
-  12%{transform:translateY(-200px);}
-  24%{transform:translateX(18px);}
-  36%{transform:translateY(-160px);}
-  48%{transform:translateY(13px);}
-  60%{transform:translateY(-10px);}
-  72%{transform:translateX(7px);}
-  84%{transform:translateY(-40px);}
-  92%{transform:translateX(200px);}
-}
-@keyframes forceSweep{to{transform:translateX(120%) rotate(-8deg);opacity:0;}}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
- 
-<!-- ═══ SPLASH ═══════════════════════════════════════════════ -->
+
 <div id="splash">
   <div class="rain" id="rain"></div>
   <h1>MAHMUD ULASHEV.EXE</h1>
-  <p class="splash-sub">// DUNYO TAYYORLANMOQDA...</p>
+  
   <div class="mario-loader" aria-label="Yuklanmoqda">
     <div class="mario-runner"></div>
     <div class="mario-coin">●</div>
     <div class="mario-track">
-      <span class="mario-block"></span>
-      <span class="mario-block"></span>
-      <span class="mario-block"></span>
-      <span class="mario-block"></span>
-      <span class="mario-block"></span>
-      <span class="mario-block"></span>
-      <span class="mario-block"></span>
-      <span class="mario-block"></span>
-      <span class="mario-block"></span>
-      <span class="mario-block"></span>
-      <span class="mario-block"></span>
-      <span class="mario-block"></span>
-      <span class="mario-fill"></span>
+      <span class="mario-block"></span><span class="mario-block"></span>
+      <span class="mario-block"></span><span class="mario-block"></span>
+      <span class="mario-block"></span><span class="mario-block"></span>
+      <span class="mario-block"></span><span class="mario-block"></span>
+      <span class="mario-block"></span><span class="mario-block"></span>
+      <span class="mario-block"></span><span class="mario-block"></span>
+      <div class="mario-fill"></div>
     </div>
   </div>
-  <p class="press-start blink">[ START ]</p>
+  <p class="press-start blink">[ LOADING... ]</p>
 </div>
 
 <div id="siteStage">
- 
-<!-- ═══ HEADER / HUD ═════════════════════════════════════════ -->
+
 <header>
   <div class="hud-logo">M.EXE</div>
   <nav>
@@ -598,16 +45,28 @@ body.force-mode #hero::after{
     <a href="#projects">LOYIHALAR</a>
     <a href="#skills">KO'NIKMALAR</a>
     <a href="#game">O'YINLAR</a>
-    <a href="#contact">ALOQA</a>
+    <a href="#contact" class="nav-cta">✉ BOG'LANISH</a>
   </nav>
-  <div class="lives">
+  <button class="hamburger" id="hamburger" aria-label="Menyu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="lives" aria-label="Hayot">
     <span class="heart">♥</span>
     <span class="heart">♥</span>
     <span class="heart">♥</span>
   </div>
 </header>
- 
-<!-- ═══ HERO ══════════════════════════════════════════════════ -->
+
+<div class="mobile-nav" id="mobileNav">
+  <a href="#services" class="mobile-link">XIZMATLAR</a>
+  <a href="#about" class="mobile-link">HAQIMDA</a>
+  <a href="#experience" class="mobile-link">TAJRIBA</a>
+  <a href="#projects" class="mobile-link">LOYIHALAR</a>
+  <a href="#skills" class="mobile-link">KO'NIKMALAR</a>
+  <a href="#game" class="mobile-link">O'YINLAR</a>
+  <a href="#contact" class="mobile-link nav-cta">✉ BOG'LANISH</a>
+</div>
+
 <div id="hero">
   <div class="hero-bg">
     <div class="iso-grid"></div>
@@ -615,46 +74,51 @@ body.force-mode #hero::after{
     <div class="scanlines"></div>
   </div>
   <div class="hero-content">
-    <p class="hero-tag">// BIRINCHI O'YINCHI DUNYOGA KIRDI</p>
+    
+
     <h1 class="hero-title"><span class="acc">MAHMUD</span><br>ULASHEV</h1>
-    <p class="hero-sub">WEB DASTURCHI &nbsp;·&nbsp; SAMARKAND, UZ<br>DARAJA 30+ &nbsp;·&nbsp; SINF: RAQAMLI QURUVCHI</p>
+    
+    <p class="hero-value-line">
+      <strong> sahifalar</strong> va <strong>web ilovalar</strong>
+     
+    </p>
+    <p class="hero-sub">WEB DASTURCHI &nbsp;·&nbsp; 30+ LOYIHA &nbsp;·&nbsp; 34+ MIJOZ &nbsp;·&nbsp; 10+ XALQARO XP</p>
     <div class="hero-btns">
       <a href="#projects" class="px-btn">▶ ISHLARNI KO'RISH</a>
+      <a href="#contact" class="px-btn red">✉ LOYIHA BOSHLASH</a>
       <a href="#game" class="px-btn out">🎮 O'YIN O'YNASH</a>
-      <a href="#contact" class="px-btn out">✉ ALOQA</a>
     </div>
   </div>
-  <!-- Isometric LEGO city at bottom -->
   <div class="iso-blocks" id="isoBlocks"></div>
 </div>
 
-<!-- ═══ SERVICE KITS ═══════════════════════════════════════════ -->
 <section id="services">
   <h2 class="sec-title reveal">QURILISH TO'PLAMLARI</h2>
   <div class="kit-grid reveal">
     <div class="kit-card">
       <span class="kit-ico">🏁</span>
       <p class="kit-title">LANDING SAHIFALAR</p>
-      <p class="kit-desc">Mahsulot, kurs yoki xizmatni aniq tushuntiradigan, tez yuklanadigan va murojaatga olib boradigan sahifalar.</p>
+      <p class="kit-desc">Mahsulot, kurs yoki xizmatni aniq tushuntiradigan, tez yuklanadigan va murojaatga olib boradigan sahifalar. Mobil va desktop uchun to'liq optimallashtirilgan.</p>
+      <span class="kit-tag">HTML · CSS · JS · FIGMA</span>
     </div>
     <div class="kit-card">
       <span class="kit-ico">🧩</span>
       <p class="kit-title">WEB ILOVALAR</p>
-      <p class="kit-desc">Dashboard, katalog, kabinet va ma'lumotlar bilan ishlaydigan tizimlar. Frontend va backend bir mantiqda quriladi.</p>
+      <p class="kit-desc">Dashboard, katalog, kabinet va ma'lumotlar bilan ishlaydigan tizimlar. Frontend va backend bir mantiqda, React/Next.js asosida quriladi.</p>
+      <span class="kit-tag">REACT · NEXT.JS · NODE.JS</span>
     </div>
     <div class="kit-card">
       <span class="kit-ico">⚡</span>
-      <p class="kit-title">OPTIMIZATSIYA</p>
-      <p class="kit-desc">Mavjud sayt tezligi, tuzilmasi, SEO asoslari va mobil ko'rinishini tartibga keltirish.</p>
+      <p class="kit-title">OPTIMALLASHTIRISH</p>
+      <p class="kit-desc">Mavjud sayt tezligi, tuzilmasi, SEO va mobil ko'rinishini tartibga keltirish. Google PageSpeed ball oshiriladi.</p>
+      <span class="kit-tag">SEO · PERFORMANCE · UX</span>
     </div>
   </div>
 </section>
- 
-<!-- ═══ ABOUT ══════════════════════════════════════════════════ -->
+
 <section id="about">
   <h2 class="sec-title reveal">O'YINCHI HAQIDA</h2>
   <div class="about-grid reveal">
-    <!-- Character card -->
     <div>
       <div class="char-card">
         <div class="char-avatar">
@@ -666,18 +130,16 @@ body.force-mode #hero::after{
           <div class="cs">DARAJA<span>30+</span></div>
           <div class="cs">LOYIHA<span>30+</span></div>
           <div class="cs">MIJOZ<span>34+</span></div>
-          <div class="cs">XALQARO XP<span>10+</span></div>
+          <div class="cs">XP<span>10+</span></div>
         </div>
       </div>
-      <!-- Brick row decoration -->
-      <div style="display:flex;gap:4px;margin-top:12px;justify-content:center;">
+      <div style="display:flex;gap:4px;margin-top:14px;justify-content:center;">
         <div class="lb sm" style="background:#CC1111;"></div>
         <div class="lb sm" style="background:#FFD700;"></div>
         <div class="lb sm" style="background:#1155CC;"></div>
         <div class="lb sm" style="background:#22AA44;"></div>
       </div>
     </div>
-    <!-- Skills + bio -->
     <div>
       <p class="about-desc">
         Men Mahmudman — sayt yaratish faqat texnik jarayon emas, balki shaxsiyat, qadriyat va uslubni ifodalash vositasi deb biladigan dasturchiman. Zamonaviy, sifatli va natijaga ishlaydigan web tajribalar yarataman.
@@ -686,18 +148,16 @@ body.force-mode #hero::after{
     </div>
   </div>
 </section>
- 
-<!-- Stats -->
+
 <div class="wrap reveal">
   <div class="stats-row">
-    <div class="sbox"><span class="sbox-num">30+</span><span class="sbox-lbl">YARATILGAN SAYT</span></div>
-    <div class="sbox"><span class="sbox-num">95%</span><span class="sbox-lbl">MIJOZ BAHOSI</span></div>
-    <div class="sbox"><span class="sbox-num">10+</span><span class="sbox-lbl">XALQARO LOYIHA</span></div>
-    <div class="sbox"><span class="sbox-num">5+</span><span class="sbox-lbl">ISHLAYOTGAN BAZA</span></div>
+    <div class="sbox"><span class="sbox-num">30+</span><span class="sbox-lbl">YARATILGAN<br>SAYT</span></div>
+    <div class="sbox"><span class="sbox-num">95%</span><span class="sbox-lbl">MIJOZ<br>BAHOSI</span></div>
+    <div class="sbox"><span class="sbox-num">10+</span><span class="sbox-lbl">XALQARO<br>LOYIHA</span></div>
+    <div class="sbox"><span class="sbox-num">5+</span><span class="sbox-lbl">ISHLAYOTGAN<br>BAZA</span></div>
   </div>
 </div>
 
-<!-- ═══ PROCESS ════════════════════════════════════════════════ -->
 <section id="process">
   <h2 class="sec-title reveal">ISH JARAYONI</h2>
   <div class="step-grid reveal">
@@ -719,25 +179,22 @@ body.force-mode #hero::after{
     <div class="step-card">
       <span class="step-num">04</span>
       <p class="step-title">ISHGA TUSHIRISH</p>
-      <p class="step-desc">Deploy, domen, test va yakuniy silliqlashdan keyin sayt real foydalanuvchilar uchun tayyor bo'ladi.</p>
+      <p class="step-desc">Deploy, domen, test va yakuniy silliqlashdan keyin sayt real foydalanuvchilar uchun tayyor.</p>
     </div>
   </div>
 </section>
 
-<!-- ═══ EXPERIENCE ═══════════════════════════════════════════════ -->
 <section id="experience">
   <h2 class="sec-title reveal">MISSIYA JURNALI</h2>
   <div class="exp-grid reveal">
     <div class="exp-item">
       <div class="exp-year">2025 — HOZIRGACHA</div>
       <div class="exp-role">ILMLADA SOFTWARE ENGINEER</div>
-   
       <p class="exp-desc">Dunyo bo'ylab mijozlar uchun individual saytlar va web ilovalar yarataman. Asosiy yo'nalishim — React/Next.js steklari, yuqori tezlik va qulay foydalanuvchi tajribasi.</p>
     </div>
     <div class="exp-item">
       <div class="exp-year">2023 — 2025</div>
       <div class="exp-role">PROFESSIONAL FRONTENDCHI</div>
-
       <p class="exp-desc">E-commerce platformalari va CMS yechimlarini ishlab chiqdim. Landing sahifalardan tortib murakkab web ilovalargacha bo'lgan loyihalarda xalqaro jamoalar bilan ishladim.</p>
     </div>
     <div class="exp-item">
@@ -747,10 +204,11 @@ body.force-mode #hero::after{
     </div>
   </div>
 </section>
+
 <section id="projects">
   <h2 class="sec-title reveal">LOYIHANI TANLANG</h2>
-  <p style="color:var(--muted);font-size:7px;margin-bottom:28px;line-height:2;" class="reveal">
-    MISSIYA TAFSILOTLARINI KO'RISH UCHUN LOYIHA KARTASINI BOSING
+  <p style="color:var(--muted);font-size:8px;margin-bottom:28px;line-height:2;font-family:var(--mono);" class="reveal">
+    TAFSILOTLARNI KO'RISH UCHUN KARTANI BOSING →
   </p>
   <div class="world-map reveal">
     <div class="lvl" onclick="openDlg('manage')">
@@ -759,7 +217,7 @@ body.force-mode #hero::after{
       <p class="lvl-title">MANAGE</p>
       <p class="lvl-desc">Vazifalarni boshqarish uchun toza va moslashuvchan landing sahifa. Har bir piksel o'z vazifasini bajaradi.</p>
       <span class="lvl-tag">WEB DIZAYN</span><span class="lvl-tag">MOSLASHUVCHAN</span>
-      <span class="lvl-link">manage-six-kappa.vercel.app →</span>
+      <a class="lvl-link">manage-six-kappa.vercel.app →</a>
     </div>
     <div class="lvl" onclick="openDlg('ilmla')">
       <span class="lvl-badge">DARAJA 02</span>
@@ -767,7 +225,7 @@ body.force-mode #hero::after{
       <p class="lvl-title">ILMLA</p>
       <p class="lvl-desc">O'zbek auditoriyasi uchun ta'lim platformasi. Web dizayn va strategik konsalting. Ishlaydi va natija beradi.</p>
       <span class="lvl-tag">KONSALTING</span><span class="lvl-tag">TA'LIM</span>
-      <span class="lvl-link">ilmla.uz →</span>
+      <a class="lvl-link">ilmla.uz →</a>
     </div>
     <div class="lvl" onclick="openDlg('uztitr')">
       <span class="lvl-badge">DARAJA 03</span>
@@ -775,7 +233,7 @@ body.force-mode #hero::after{
       <p class="lvl-title">UZTITR FILMLAR</p>
       <p class="lvl-desc">O'zbek filmlari va seriallari uchun to'liq baza. Janr, reyting va til bo'yicha qidiruv — real backend bilan.</p>
       <span class="lvl-tag">MA'LUMOTLAR BAZASI</span><span class="lvl-tag">FILM PORTAL</span>
-      <span class="lvl-link">uztitr.uz →</span>
+      <a class="lvl-link">uztitr.uz →</a>
     </div>
     <div class="lvl" onclick="openDlg('wallet')">
       <span class="lvl-badge">DARAJA 04</span>
@@ -783,40 +241,36 @@ body.force-mode #hero::after{
       <p class="lvl-title">MY WALLET</p>
       <p class="lvl-desc">Raqamli hamyon mahsuloti uchun konversiyaga yo'naltirilgan aniq landing sahifa. Vercel'da joylangan.</p>
       <span class="lvl-tag">LANDING</span><span class="lvl-tag">FINTECH</span>
-      <span class="lvl-link">my-wallet-dusky.vercel.app →</span>
+      <a class="lvl-link">my-wallet-dusky.vercel.app →</a>
     </div>
   </div>
 </section>
- 
-<!-- Dialogue box -->
+
 <div id="dlg">
   <span class="dlg-close" onclick="closeDlg()">✕</span>
   <p class="dlg-title" id="dlgTitle"></p>
   <p class="dlg-body" id="dlgBody"></p>
   <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
     <a id="dlgLink" href="#" target="_blank" class="px-btn" style="font-size:8px;padding:10px 16px;">LOYIHAGA O'TISH →</a>
-    <span class="dlg-arrow">▼ YOPISH UCHUN ESC</span>
+    <span class="dlg-arrow">▼ YOPISH: ESC</span>
   </div>
 </div>
 
-<!-- Easter egg feedback -->
 <div id="eggOverlay"></div>
 <div id="eggToast" aria-live="polite">
   <p class="egg-title" id="eggTitle"></p>
   <p class="egg-body" id="eggBody"></p>
 </div>
- 
-<!-- ═══ SKILLS / INVENTORY ════════════════════════════════════ -->
+
 <section id="skills">
   <h2 class="sec-title reveal">ARSENAL</h2>
   <div class="inv-grid reveal" id="invGrid"></div>
 </section>
- 
-<!-- ═══ SNAKE GAME ════════════════════════════════════════════ -->
+
 <section id="game">
   <h2 class="sec-title" style="justify-content:center;">MINI O'YIN I — LEGO ILON</h2>
-  <p style="color:var(--muted);font-size:7px;margin-bottom:20px;line-height:2;">
-    O'SISH UCHUN G'ISHTLARNI YIG'ING · DEVORGA YOKI O'ZINGIZGA URILMANG
+  <p style="color:var(--muted);font-size:7px;margin-bottom:20px;line-height:2;font-family:var(--mono);">
+    O'SISH UCHUN G'ISHTLARNI YIG'ING · DEVORGA URILMANG
   </p>
   <div class="game-wrap">
     <div class="game-hud">
@@ -828,10 +282,9 @@ body.force-mode #hero::after{
   </div>
   <div class="game-ctrl">
     <span>↑↓←→ / WASD — HARAKAT</span>
-    <span>ENTER — BOSHLASH / QAYTA BOSHLASH</span>
+    <span>ENTER — BOSHLASH</span>
     <span>P — PAUZA</span>
   </div>
-  <!-- Mobile d-pad -->
   <div class="dpad">
     <div class="dpad-grid">
       <div></div>
@@ -846,11 +299,10 @@ body.force-mode #hero::after{
     </div>
   </div>
 </section>
- 
-<!-- ═══ FLAPPY BRICKS ═════════════════════════════════════════ -->
-<section id="flappy-section">
-  <h2 class="sec-title" style="justify-content:center;">MINI O'YIN II — UCHAR G'ISHT</h2>
-  <p style="color:var(--muted);font-size:7px;margin-bottom:20px;">
+
+<section id="flappy-section" style="text-align:center;padding-top:0;max-width:1180px;margin:0 auto;padding-bottom:80px;">
+  <h2 class="sec-title" style="justify-content:center;padding:0 32px;">MINI O'YIN II — UCHAR G'ISHT</h2>
+  <p style="color:var(--muted);font-size:7px;margin-bottom:20px;font-family:var(--mono);">
     UCHISH UCHUN BOSING · TO'SIQLARDAN O'TING
   </p>
   <div class="flappy-wrap">
@@ -863,16 +315,26 @@ body.force-mode #hero::after{
   </div>
 </section>
 
-<!-- ═══ TERMINAL ═══════════════════════════════════════════════ -->
-<section id="terminal">
-  <h2 class="sec-title reveal" style="justify-content:center;">LINUX TERMINAL</h2>
-  <p style="color:var(--muted);font-size:7px;margin-bottom:20px;text-align:center;">
+<section id="terminal" style="max-width:1180px;margin:0 auto;padding:0 32px 80px;">
+  <h2 class="sec-title reveal" style="justify-content:center;">TERMINAL</h2>
+  <p style="color:var(--muted);font-size:7px;margin-bottom:20px;text-align:center;font-family:var(--mono);">
     BUYRUQLARNI KIRITING · 'help' YORDAM UCHUN
   </p>
-  <div id="terminal-container" style="border:4px solid var(--y);box-shadow:6px 6px 0 var(--ya);background:#000;padding:16px;"></div>
+  <div id="terminal-container"></div>
 </section>
 
-<!-- ═══ CONTACT ════════════════════════════════════════════════ -->
+<div class="contact-cta-box reveal">
+  <p class="cta-headline">LOYIHA BOSHLAYMIZMI? 🚀</p>
+  <p class="cta-sub">
+    Qanday sayt kerakligi haqida qisqacha yozing — men 24 soat ichida javob beraman.<br>
+    Maslahat tekin. Narx — aniq. Natija — kafolatli.
+  </p>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;">
+    <a href="https://t.me/mahmudulashev" target="_blank" class="px-btn">✈ TELEGRAM ORQALI →</a>
+    <a href="mailto:mahmud_u@icloud.com" class="px-btn out">✉ EMAIL YUBORISH</a>
+  </div>
+</div>
+
 <section id="contact">
   <h2 class="sec-title reveal" style="justify-content:center;">QAHRAMON BILAN ALOQA</h2>
   <div class="coin">🪙</div>
@@ -901,8 +363,7 @@ body.force-mode #hero::after{
     </a>
   </div>
 </section>
- 
-<!-- ═══ FOOTER ═════════════════════════════════════════════════ -->
+
 <footer>
   <div style="display:flex;gap:6px;justify-content:center;margin-bottom:14px;">
     <div class="lb sm" style="background:#CC1111;"></div>
@@ -912,821 +373,10 @@ body.force-mode #hero::after{
   </div>
   <p>© 2025 MAHMUD ULASHEV — PIKSELLAR VA MAQSAD BILAN YARATILGAN</p>
   <p>mahmud_u@icloud.com &nbsp;·&nbsp; github.com/mahmudulashev</p>
-  <p style="margin-top:8px;color:#444;">[ KONAMI KODI: ↑ ↑ ↓ ↓ ← → ← → B A ]</p>
+  <p style="margin-top:8px;color:#333;">[ KONAMI KODI: ↑ ↑ ↓ ↓ ← → ← → B A ]</p>
 </footer>
 </div>
- 
-<script>
-// ─── SPLASH ──────────────────────────────────────────────────
-(function(){
-  const splash = document.getElementById('splash');
-  const rain = document.getElementById('rain');
-  const COLORS = ['#CC1111','#1155CC','#22AA44','#FFD700','#FF8800'];
-  // falling bricks rain
-  for(let i=0;i<22;i++){
-    const d=document.createElement('div');
-    d.className='lb';
-    d.style.cssText=`
-      position:absolute;
-      left:${Math.random()*100}vw;
-      top:-60px;
-      background:${COLORS[Math.floor(Math.random()*5)]};
-      width:${36+Math.random()*30}px;
-      opacity:0.6;
-      animation:rainFall ${3+Math.random()*5}s linear ${-Math.random()*6}s infinite;
-    `;
-    rain.appendChild(d);
-  }
-  const style=document.createElement('style');
-  style.textContent='@keyframes rainFall{to{transform:translateY(110vh) rotate(360deg)}}';
-  document.head.appendChild(style);
- 
-  function dismiss(){splash.style.display='none';}
-  const enterTimer=setTimeout(dismiss,2800);
-  setTimeout(()=>splash.classList.add('ready'),2300);
-  splash.addEventListener('click',()=>{
-    if(!splash.classList.contains('ready'))return;
-    clearTimeout(enterTimer);dismiss();
-  });
-  document.addEventListener('keydown',()=>{
-    if(!splash.classList.contains('ready'))return;
-    clearTimeout(enterTimer);dismiss();
-  });
-})();
- 
-// ─── ISO HERO BRICKS ──────────────────────────────────────────
-(function(){
-  const c=document.getElementById('isoBlocks');
-  if(!c)return;
-  const cols=['#CC1111','#1155CC','#FFD700','#22AA44','#FF8800','#AA44CC','#CC1111','#FFD700','#1155CC','#22AA44'];
-  const heights=[1,2,1,3,2,1,2,1,3,2];
-  cols.forEach((col,i)=>{
-    const stack=document.createElement('div');
-    stack.style.cssText='display:flex;flex-direction:column;justify-content:flex-end;gap:0;';
-    for(let j=0;j<heights[i];j++){
-      const b=document.createElement('div');
-      b.className='lb';
-      b.style.cssText=`background:${col};width:60px;height:30px;border-radius:2px;margin-top:2px;`;
-      stack.appendChild(b);
-    }
-    c.appendChild(stack);
-  });
-})();
 
-// ─── HERO FALLING BRICKS ──────────────────────────────────────
-(function(){
-  const c=document.getElementById('heroRain');
-  if(!c)return;
-  const cols=['#CC1111','#1155CC','#FFD700','#22AA44','#FF8800','#AA44CC'];
-  const total=36;
-  for(let i=0;i<total;i++){
-    const b=document.createElement('div');
-    b.className='fall-brick';
-    const w=28+Math.random()*34;
-    const drift=-80+Math.random()*160;
-    b.style.setProperty('--x',Math.random()*100+'vw');
-    b.style.setProperty('--w',w+'px');
-    b.style.setProperty('--c',cols[Math.floor(Math.random()*cols.length)]);
-    b.style.setProperty('--dur',(7+Math.random()*7)+'s');
-    b.style.setProperty('--delay',(-Math.random()*12)+'s');
-    b.style.setProperty('--drift',drift+'px');
-    b.style.setProperty('--drift-end',(drift*.4+(-60+Math.random()*120))+'px');
-    b.style.setProperty('--op',(0.25+Math.random()*0.35).toFixed(2));
-    c.appendChild(b);
-  }
-})();
- 
-// ─── PIXEL CHARACTER (canvas) ────────────────────────────────
-(function(){
-  const cv=document.getElementById('charCanvas');
-  if(!cv)return;
-  const ctx=cv.getContext('2d');
-  ctx.clearRect(0,0,cv.width,cv.height);
-
-  function r(x,y,w,h,c){ctx.fillStyle=c;ctx.fillRect(x,y,w,h);}
-
-  const hair='#A97716';
-  const hairDark='#8A5D10';
-  const skin='#F0C7A8';
-  const skinShade='#E8B894';
-  const jacket='#BDB6A2';
-  const jacketShade='#A9A18F';
-  const tie='#9E1B1E';
-  const pants='#676A5F';
-  const shoes='#6A4216';
-  const eye='#2A2D2E';
-
-  // shadow
-  r(35,151,63,4,'rgba(0,0,0,.22)');
-
-  // hair, copied as flat stepped blocks from the reference style
-  r(28,12,14,50,hair);
-  r(20,28,14,31,hair);
-  r(34,42,64,19,hair);
-  r(42,31,64,16,hair);
-  r(92,47,18,17,hairDark);
-  r(98,60,13,25,hairDark);
-
-  // head and ears
-  r(34,62,70,42,skin);
-  r(28,77,7,18,skinShade);
-  r(104,78,11,13,skinShade);
-  r(45,86,35,12,'#F3D0BA');
-
-  // face
-  r(51,75,8,8,eye);
-  r(68,75,8,8,eye);
-  r(56,95,24,5,'#E7BCA3');
-
-  // neck
-  r(58,103,18,15,skin);
-
-  // jacket and shirt
-  r(34,118,70,56,jacket);
-  r(48,118,18,56,'#E9DDC4');
-  r(66,118,17,56,tie);
-  r(61,118,22,10,tie);
-  r(34,118,15,55,jacketShade);
-  r(89,118,15,55,jacketShade);
-
-  // hands
-  r(35,173,12,14,skin);
-  r(92,173,12,14,skin);
-
-  // pants
-  r(47,184,23,52,pants);
-  r(75,184,23,52,pants);
-  r(70,184,6,30,'#F6F3EB');
-
-  // shoes
-  r(35,236,35,11,shoes);
-  r(75,236,31,11,shoes);
-})();
- 
-// ─── SKILL BARS ───────────────────────────────────────────────
-const SKILLS=[
-  {n:'HTML / CSS',p:95,c:'#CC1111'},
-  {n:'JavaScript',p:85,c:'#FFD700'},
-  {n:'React / Next.js',p:78,c:'#1155CC'},
-  {n:'Git / GitHub',p:88,c:'#22AA44'},
-  {n:'SEO',p:80,c:'#FF8800'},
-  {n:'UI / UX dizayn',p:82,c:'#AA44CC'},
-];
-const sb=document.getElementById('skillBars');
-SKILLS.forEach(s=>{
-  const d=document.createElement('div');
-  d.className='skill-row';
-  d.innerHTML=`
-    <div class="skill-lbl"><b>${s.n}</b><em>${s.p}%</em></div>
-    <div class="skill-track">
-      <div class="skill-fill" data-w="${s.p}" style="background:${s.c};"></div>
-    </div>`;
-  sb.appendChild(d);
-});
- 
-// ─── INVENTORY ────────────────────────────────────────────────
-const ITEMS=['HTML5','CSS3','JavaScript','React','Next.js','Git','GitHub','Figma','SEO','Moslashuvchan dizayn','Brending','UI/UX','Vercel','Node.js','Web tezlik'];
-const ig=document.getElementById('invGrid');
-ITEMS.forEach(s=>{
-  const d=document.createElement('div');
-  d.className='inv-item';
-  d.textContent=s;
-  ig.appendChild(d);
-});
- 
-// ─── DIALOGUE ─────────────────────────────────────────────────
-const PROJS={
-  manage:{title:'DARAJA 01 — MANAGE',body:'Vazifalarni boshqarish mahsuloti uchun toza va zamonaviy landing sahifa. To\'liq moslashuvchan, aniqlik va konversiyaga yo\'naltirilgan. Texnologiyalar: HTML, CSS, JavaScript.',link:'https://manage-six-kappa.vercel.app/'},
-  ilmla:{title:'DARAJA 02 — ILMLA',body:'O\'zbek auditoriyasiga mo\'ljallangan ta\'lim platformasi. Web dizayn strategik konsalting bilan birlashtirilib, ishlaydigan va konversiya beradigan mahsulot yaratildi.',link:'https://ilmla.uz'},
-  uztitr:{title:'DARAJA 03 — UZTITR FILMLAR',body:'O\'zbek filmlari va seriallari uchun to\'liq ma\'lumotlar bazasi. Foydalanuvchilar janr, reyting va til bo\'yicha saralay oladi. Maxsus server-side backend asosida qurilgan.',link:'https://uztitr.uz'},
-  wallet:{title:'DARAJA 04 — MY WALLET',body:'Raqamli hamyon mahsuloti uchun konversiyaga yo\'naltirilgan landing sahifa. Aniq UI, to\'liq moslashuvchan tuzilma va Vercel orqali deploy qilingan.',link:'https://my-wallet-dusky.vercel.app/'},
-};
-function openDlg(k){
-  const p=PROJS[k];
-  document.getElementById('dlgTitle').textContent=p.title;
-  document.getElementById('dlgBody').textContent=p.body;
-  document.getElementById('dlgLink').href=p.link;
-  document.getElementById('dlg').classList.add('on');
-}
-function closeDlg(){document.getElementById('dlg').classList.remove('on');}
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDlg();});
- 
-// ─── SCROLL REVEAL ────────────────────────────────────────────
-const revealEls=document.querySelectorAll('.reveal');
-const revObs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.classList.add('visible');
-      // trigger skill bars
-      e.target.querySelectorAll('.skill-fill[data-w]').forEach(el=>{
-        el.style.width=el.dataset.w+'%';
-      });
-    }
-  });
-},{threshold:.15});
-revealEls.forEach(el=>revObs.observe(el));
- 
-// ─── SNAKE GAME ───────────────────────────────────────────────
-(function(){
-  const cv=document.getElementById('snakeCanvas');
-  const ctx=cv.getContext('2d');
-  const COLS=20,ROWS=20,CW=cv.width/COLS,CH=cv.height/ROWS;
-  let snake,dir,ndir,food,score,hi=0,running=false,paused=false,loop;
- 
-  function rand(max){return Math.floor(Math.random()*max);}
- 
-  function init(){
-    snake=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];
-    dir={x:1,y:0};ndir={x:1,y:0};score=0;
-    updateHUD();placeFood();
-  }
- 
-  function placeFood(){
-    do{food={x:rand(COLS),y:rand(ROWS)};}
-    while(snake.some(s=>s.x===food.x&&s.y===food.y));
-  }
- 
-  function drawBrick(x,y,col,dark){
-    const px=x*CW,py=y*CH;
-    ctx.fillStyle=col;
-    ctx.fillRect(px+1,py+1,CW-2,CH-2);
-    // top face highlight
-    ctx.fillStyle='rgba(255,255,255,0.15)';
-    ctx.fillRect(px+1,py+1,CW-2,3);
-    // stud
-    ctx.fillStyle=dark||col;
-    ctx.beginPath();
-    ctx.arc(px+CW/2,py+CH/2,3.5,0,Math.PI*2);
-    ctx.fill();
-    ctx.fillStyle='rgba(255,255,255,0.2)';
-    ctx.beginPath();
-    ctx.arc(px+CW/2,py+CH/2,1.5,0,Math.PI*2);
-    ctx.fill();
-  }
- 
-  function draw(){
-    // bg
-    ctx.fillStyle='#000';
-    ctx.fillRect(0,0,cv.width,cv.height);
-    // grid
-    ctx.strokeStyle='#0d0d0d';
-    ctx.lineWidth=.5;
-    for(let i=0;i<=COLS;i++){ctx.beginPath();ctx.moveTo(i*CW,0);ctx.lineTo(i*CW,cv.height);ctx.stroke();}
-    for(let i=0;i<=ROWS;i++){ctx.beginPath();ctx.moveTo(0,i*CH);ctx.lineTo(cv.width,i*CH);ctx.stroke();}
-    // food brick
-    drawBrick(food.x,food.y,'#CC1111','#990000');
-    // snake
-    snake.forEach((seg,i)=>{
-      drawBrick(seg.x,seg.y,i===0?'#FFD700':'#22AA44',i===0?'#AA8800':'#115522');
-    });
-  }
- 
-  function step(){
-    dir=ndir;
-    const head={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
-    if(head.x<0||head.x>=COLS||head.y<0||head.y>=ROWS||snake.some(s=>s.x===head.x&&s.y===head.y)){
-      end();return;
-    }
-    snake.unshift(head);
-    if(head.x===food.x&&head.y===food.y){
-      score++;if(score>hi)hi=score;
-      updateHUD();placeFood();
-    } else snake.pop();
-    draw();
-  }
- 
-  function updateHUD(){
-    document.getElementById('snkScore').textContent=score;
-    document.getElementById('snkHi').textContent=hi;
-  }
- 
-  function end(){
-    running=false;clearInterval(loop);
-    ctx.fillStyle='rgba(0,0,0,.75)';
-    ctx.fillRect(0,0,cv.width,cv.height);
-    ctx.fillStyle='#CC1111';
-    ctx.font='14px "Press Start 2P",monospace';
-    ctx.textAlign='center';
-    ctx.fillText('O\'YIN TUGADI',cv.width/2,cv.height/2-18);
-    ctx.fillStyle='#FFD700';
-    ctx.font='9px "Press Start 2P",monospace';
-    ctx.fillText('HISOB: '+score,cv.width/2,cv.height/2+10);
-    ctx.fillStyle='#555';
-    ctx.fillText('QAYTA O\'YNASH UCHUN ENTER',cv.width/2,cv.height/2+38);
-    document.getElementById('snkMsg').textContent='O\'YIN TUGADI';
-  }
- 
-  function start(){
-    init();running=true;paused=false;
-    clearInterval(loop);loop=setInterval(step,140);
-    document.getElementById('snkMsg').textContent='O\'YIN KETYAPTI...';
-  }
- 
-  // draw start screen
-  init();draw();
-  ctx.fillStyle='rgba(0,0,0,.65)';ctx.fillRect(0,0,cv.width,cv.height);
-  ctx.fillStyle='#FFD700';ctx.font='10px "Press Start 2P",monospace';ctx.textAlign='center';
-  ctx.fillText('BOSHLASH UCHUN',cv.width/2,cv.height/2-8);
-  ctx.fillText('ENTER BOSING',cv.width/2,cv.height/2+16);
- 
-  cv.addEventListener('click',()=>{if(!running)start();});
- 
-  const DIR={ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0},
-              w:{x:0,y:-1},s:{x:0,y:1},a:{x:-1,y:0},d:{x:1,y:0},
-              W:{x:0,y:-1},S:{x:0,y:1},A:{x:-1,y:0},D:{x:1,y:0}};
- 
-  document.addEventListener('keydown',e=>{
-    if(e.key==='Enter'){start();return;}
-    if(e.key==='p'||e.key==='P'){
-      if(!running)return;
-      paused=!paused;
-      if(paused){clearInterval(loop);document.getElementById('snkMsg').textContent='PAUZA';}
-      else{loop=setInterval(step,140);document.getElementById('snkMsg').textContent='O\'YIN KETYAPTI...';}
-      return;
-    }
-    const nd=DIR[e.key];
-    if(nd&&!(nd.x===-dir.x&&nd.y===-dir.y)){ndir=nd;e.preventDefault();}
-  });
- 
-  // D-pad mobile
-  document.getElementById('dUp')?.addEventListener('click',()=>{if(dir.y!==1)ndir={x:0,y:-1};});
-  document.getElementById('dDown')?.addEventListener('click',()=>{if(dir.y!==-1)ndir={x:0,y:1};});
-  document.getElementById('dLeft')?.addEventListener('click',()=>{if(dir.x!==1)ndir={x:-1,y:0};});
-  document.getElementById('dRight')?.addEventListener('click',()=>{if(dir.x!==-1)ndir={x:1,y:0};});
-})();
- 
-// ─── FLAPPY BRICKS GAME ───────────────────────────────────────
-(function(){
-  const cv=document.getElementById('flappyCanvas');
-  const ctx=cv.getContext('2d');
-  const W=cv.width,H=cv.height;
-  const GRAV=0.28,FLAP=-6.3,PIPE_W=48,GAP=132,PIPE_SPEED=2;
-  let bird,pipes,fScore,fHi=0,fRunning=false,fFrame;
- 
-  function initFlappy(){
-    bird={x:95,y:H/2,vy:0,size:24};
-    pipes=[];fScore=0;
-    document.getElementById('fScore').textContent=0;
-  }
- 
-  function spawnPipe(){
-    const topH=45+Math.random()*(H-GAP-100);
-    pipes.push({x:W,topH});
-  }
- 
-  function drawBrickRect(x,y,w,h,col){
-    const bh=14,bw=20;
-    for(let by=y;by<y+h;by+=bh){
-      for(let bx=x;bx<x+w;bx+=bw){
-        const bCol=col;
-        ctx.fillStyle=bCol;
-        ctx.fillRect(bx+1,by+1,Math.min(bw,x+w-bx)-2,Math.min(bh,y+h-by)-2);
-        ctx.fillStyle='rgba(255,255,255,0.12)';
-        ctx.fillRect(bx+1,by+1,Math.min(bw,x+w-bx)-2,2);
-        // stud
-        ctx.fillStyle='rgba(0,0,0,0.25)';
-        ctx.beginPath();
-        ctx.arc(bx+bw/2,by+bh/2,3,0,Math.PI*2);
-        ctx.fill();
-      }
-    }
-  }
- 
-  function drawFlappy(){
-    // sky
-    ctx.fillStyle='#0B1A2E';
-    ctx.fillRect(0,0,W,H);
-    // stars
-    ctx.fillStyle='rgba(255,255,255,0.4)';
-    [20,60,110,160,200,250,310,360].forEach((x,i)=>{
-      ctx.fillRect(x,(i*37)%H,2,2);
-    });
-    // pipes
-    pipes.forEach(p=>{
-      drawBrickRect(p.x,0,PIPE_W,p.topH,'#22AA44');
-      drawBrickRect(p.x,p.topH+GAP,PIPE_W,H-p.topH-GAP,'#22AA44');
-      // pipe caps
-      ctx.fillStyle='#115522';
-      ctx.fillRect(p.x-4,p.topH-12,PIPE_W+8,12);
-      ctx.fillRect(p.x-4,p.topH+GAP,PIPE_W+8,12);
-    });
-    // bird (LEGO brick shape)
-    const bx=bird.x-bird.size/2,by=bird.y-bird.size/2;
-    ctx.fillStyle='#FFD700';
-    ctx.fillRect(bx,by,bird.size,bird.size-4);
-    ctx.fillStyle='#AA8800';
-    ctx.fillRect(bx,by+bird.size-4,bird.size,4);
-    // bird stud
-    ctx.fillStyle='#EEC900';
-    ctx.beginPath();ctx.arc(bird.x,by-4,5,0,Math.PI*2);ctx.fill();
-    // eye
-    ctx.fillStyle='#000';
-    ctx.fillRect(bx+bird.size-7,by+4,4,4);
-    ctx.fillStyle='#fff';
-    ctx.fillRect(bx+bird.size-6,by+5,2,2);
-    // ground
-    drawBrickRect(0,H-20,W,20,'#5C3010');
-  }
- 
-  function updateFlappy(){
-    bird.vy+=GRAV;
-    bird.y+=bird.vy;
-    // spawn pipe every ~105 frames
-    if(fFrame>0&&fFrame%105===0)spawnPipe();
-    fFrame++;
-    pipes.forEach(p=>{p.x-=PIPE_SPEED;});
-    pipes=pipes.filter(p=>p.x>-PIPE_W-10);
-    // score
-    pipes.forEach(p=>{
-      if(!p.passed&&p.x+PIPE_W<bird.x){
-        p.passed=true;fScore++;
-        if(fScore>fHi)fHi=fScore;
-        document.getElementById('fScore').textContent=fScore;
-        document.getElementById('fHi').textContent=fHi;
-      }
-    });
-    // collision
-    const bx=bird.x-bird.size/2+3,by=bird.y-bird.size/2+3;
-    const bw=bird.size-6,bh=bird.size-6;
-    if(bird.y+bird.size/2>H-20||bird.y<0){endFlappy();return;}
-    for(const p of pipes){
-      if(bx<p.x+PIPE_W&&bx+bw>p.x){
-        if(by<p.topH||by+bh>p.topH+GAP){endFlappy();return;}
-      }
-    }
-    drawFlappy();
-    if(fRunning)requestAnimationFrame(updateFlappy);
-  }
- 
-  function endFlappy(){
-    fRunning=false;
-    ctx.fillStyle='rgba(0,0,0,.7)';ctx.fillRect(0,0,W,H);
-    ctx.fillStyle='#CC1111';
-    ctx.font='13px "Press Start 2P",monospace';
-    ctx.textAlign='center';ctx.fillText('O\'YIN TUGADI',W/2,H/2-16);
-    ctx.fillStyle='#FFD700';
-    ctx.font='9px "Press Start 2P",monospace';
-    ctx.fillText('HISOB: '+fScore,W/2,H/2+10);
-    ctx.fillStyle='#555';
-    ctx.fillText('QAYTA O\'YNASH UCHUN BOSING',W/2,H/2+36);
-    document.getElementById('fMsg').textContent='O\'YIN TUGADI — QAYTA BOSING';
-  }
- 
-  function startFlappy(){
-    initFlappy();fRunning=true;fFrame=0;
-    document.getElementById('fMsg').textContent='O\'YIN KETYAPTI...';
-    spawnPipe();
-    requestAnimationFrame(updateFlappy);
-  }
- 
-  function flap(){
-    if(!fRunning){startFlappy();return;}
-    bird.vy=FLAP;
-  }
- 
-  cv.addEventListener('click',flap);
-  document.addEventListener('keydown',e=>{if(e.code==='Space'&&document.activeElement===cv){flap();e.preventDefault();}});
- 
-  // draw initial state
-  initFlappy();
-  ctx.fillStyle='#0B1A2E';ctx.fillRect(0,0,W,H);
-  ctx.fillStyle='#1155CC';
-  ctx.font='10px "Press Start 2P",monospace';ctx.textAlign='center';
-  ctx.fillText('BOSHLASH UCHUN ENTER BOSING',W/2,H/2-8);
-  ctx.fillText('UCHAR G\'ISHT',W/2,H/2+16);
-  drawBrickRect(0,H-20,W,20,'#5C3010');
-})();
- 
-// ─── NERD EASTER EGGS ─────────────────────────────────────────
-(function(){
-  const toast=document.getElementById('eggToast');
-  const title=document.getElementById('eggTitle');
-  const body=document.getElementById('eggBody');
-  const overlay=document.getElementById('eggOverlay');
-  let toastTimer;
-  let buffer='';
-
-  function showEgg(t,b){
-    title.textContent=t;
-    body.textContent=b;
-    toast.classList.add('on');
-    clearTimeout(toastTimer);
-    toastTimer=setTimeout(()=>toast.classList.remove('on'),3800);
-  }
-
-  function clearOverlay(delay=1600){
-    setTimeout(()=>{overlay.innerHTML='';},delay);
-  }
-
-  function sparks(count=34){
-    overlay.innerHTML='';
-    for(let i=0;i<count;i++){
-      const s=document.createElement('span');
-      s.className='egg-spark';
-      s.style.left=(48+Math.random()*4)+'vw';
-      s.style.top=(44+Math.random()*8)+'vh';
-      s.style.setProperty('--dx',(-180+Math.random()*360)+'px');
-      s.style.setProperty('--dy',(-130+Math.random()*260)+'px');
-      overlay.appendChild(s);
-    }
-    clearOverlay(1200);
-  }
-
-  function tempClass(cls){
-    document.body.classList.add(cls);
-  }
-
-  function shake67(){
-    const stage=document.getElementById('siteStage');
-    document.body.classList.remove('move67-mode');
-    void stage.offsetWidth;
-    document.body.classList.add('move67-mode');
-  }
-
-  const eggs=[
-    {code:'force',run:()=>{tempClass('force-mode',1300);showEgg('FORCE EGG','Kuchli energiya tarqaldi. Sayt foni kuch rejimida porlaydi.');}},
-    {code:'anime',run:()=>{tempClass('anime-mode',1800);sparks();showEgg('ANIME EGG','Sayt toʻliq anime foniga oʻtdi. Matrica kabi yengil nur asta-sekin yoqadi.');}},
-    {code:'jjk',run:()=>{tempClass('jjk-mode',1800);sparks(24);showEgg('JJK EGG','Gojo purple rejimi: hamma joy purplega burkandi.');}},
-    {code:'42',run:()=>{showEgg('NERD EGG: 42','Savol noma\'lum, javob esa tayyor.');}},
-    {code:'67',run:shake67},
-  ];
-
-  window.addEventListener('load',()=>{
-    console.log('%cMAHMUD.EXE', 'color:#FFD700;font-size:22px;font-weight:bold;text-shadow:2px 2px #AA8800;');
-    console.log('%cHidden commands: force, anime, jjk, 42, 67', 'color:#22AA44;');
-  });
-
-  document.addEventListener('keydown',e=>{
-    if(e.metaKey||e.ctrlKey||e.altKey)return;
-    if(e.key.length===1){
-      buffer=(buffer+e.key.toLowerCase()).slice(-28);
-      eggs.forEach(egg=>{
-        if(buffer.endsWith(egg.code)){
-          buffer='';
-          egg.run();
-        }
-      });
-    }
-  });
-})();
-
-// ─── KONAMI CODE EASTER EGG ───────────────────────────────────
-(function(){
-  const KONAMI=['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
-  let k=0;
-  document.addEventListener('keydown',e=>{
-    if(e.key===KONAMI[k])k++;else k=0;
-    if(k===KONAMI.length){
-      k=0;
-      document.body.style.transition='filter 0.5s';
-      document.body.style.filter='hue-rotate(180deg) saturate(3)';
-      const title=document.getElementById('eggTitle');
-      const body=document.getElementById('eggBody');
-      const toast=document.getElementById('eggToast');
-      title.textContent='GAME EGG: KONAMI';
-      body.textContent='+30 jon qo\'shildi. Aslida yo\'q, lekin urinish yaxshi.';
-      toast.classList.add('on');
-      setTimeout(()=>toast.classList.remove('on'),3800);
-    }
-  });
-})();
-
-// ─── TERMINAL ────────────────────────────────────────────────
-(function(){
-  const term = new Terminal({
-    cursorBlink: true,
-    fontFamily: '"Roboto Mono", "Press Start 2P", monospace',
-    fontSize: 12,
-    cols: 80,
-    rows: 24,
-    theme: {
-      background: '#000',
-      foreground: '#FFD700',
-      cursor: '#FFD700',
-      selection: 'rgba(255,215,0,0.3)'
-    }
-  });
-
-  const container = document.getElementById('terminal-container');
-  term.open(container);
-  term.write('MAHMUD ULASHEV.EXE Terminal v1.0\r\n');
-  term.write('Yordam uchun "help" yozing.\r\n\r\n');
-  term.write('mahmud@portfolio:~$ ');
-
-  let commandBuffer = '';
-  let history = [];
-  let historyIndex = -1;
-
-  function clearThemes() {
-    document.body.classList.remove('anime-mode', 'force-mode', 'jjk-mode', 'move67-mode');
-    document.body.style.filter = 'none';
-    const overlay = document.getElementById('eggOverlay');
-    overlay.innerHTML = '';
-  }
-
-  const commands = {
-    help: () => {
-      term.write('\r\nMavjud buyruqlar:\r\n');
-      term.write('  whoiam     - Foydalanuvchi haqida ma\'lumot\r\n');
-      term.write('  ls         - Fayllarni ko\'rsatish\r\n');
-      term.write('  pwd        - Joriy katalog\r\n');
-      term.write('  echo       - Matnni chiqarish\r\n');
-      term.write('  clear      - Terminalni tozalash\r\n');
-      term.write('  date       - Sana va vaqt\r\n');
-      term.write('  uname      - Tizim haqida\r\n');
-      term.write('  theme      - Theme o\'zgartirish (anime/force/jjk/off)\r\n');
-      term.write('  konami     - Konami kodi\r\n');
-      term.write('  anime      - Anime rejimi\r\n');
-      term.write('  force      - Kuch rejimi\r\n');
-      term.write('  jjk        - Gojo purple rejimi\r\n');
-      term.write('  42         - 42 javobi\r\n');
-      term.write('  67         - 67 tebranish\r\n');
-      term.write('\r\n');
-    },
-    whoiam: () => {
-      term.write('\r\nIsm: Mahmud Ulashev\r\n');
-      term.write('Kasb: Web dasturchi\r\n');
-      term.write('Shahar: Samarkand, Uzbekistan\r\n');
-      term.write('Daraja: 30+\r\n');
-      term.write('Loyihalar: 30+\r\n');
-      term.write('Mijozlar: 34+\r\n');
-      term.write('Xalqaro XP: 10+\r\n');
-      term.write('\r\n');
-    },
-    ls: () => {
-      term.write('\r\nindex.html\r\n');
-      term.write('portfolio.js\r\n');
-      term.write('styles.css\r\n');
-      term.write('games/\r\n');
-      term.write('projects/\r\n');
-      term.write('\r\n');
-    },
-    pwd: () => {
-      term.write('\r\n/home/mahmud/portfolio\r\n\r\n');
-    },
-    echo: (args) => {
-      term.write('\r\n' + args.join(' ') + '\r\n\r\n');
-    },
-    clear: () => {
-      term.clear();
-      term.write('MAHMUD ULASHEV.EXE Terminal v1.0\r\n');
-      term.write('mahmud@portfolio:~$ ');
-    },
-    date: () => {
-      term.write('\r\n' + new Date().toString() + '\r\n\r\n');
-    },
-    uname: () => {
-      term.write('\r\nMAHMUD ULASHEV.EXE Portfolio OS\r\n\r\n');
-    },
-    theme: (args) => {
-      const theme = args[0]?.toLowerCase();
-      if (!theme) {
-        // Hozirgi theme'ni ko'rsatish
-        let current = 'off';
-        if (document.body.classList.contains('anime-mode')) current = 'anime';
-        else if (document.body.classList.contains('force-mode')) current = 'force';
-        else if (document.body.classList.contains('jjk-mode')) current = 'jjk';
-        term.write('\r\nHozirgi theme: ' + current + '\r\n');
-        term.write('O\'zgartirish uchun: theme anime/force/jjk/off\r\n\r\n');
-        return;
-      }
-      clearThemes();
-      if (theme === 'anime') {
-        document.body.classList.add('anime-mode');
-        term.write('\r\nTheme: Anime rejimi\r\n\r\n');
-      } else if (theme === 'force') {
-        document.body.classList.add('force-mode');
-        term.write('\r\nTheme: Kuch rejimi\r\n\r\n');
-      } else if (theme === 'jjk') {
-        document.body.classList.add('jjk-mode');
-        term.write('\r\nTheme: Gojo purple rejimi\r\n\r\n');
-      } else if (theme === 'off') {
-        term.write('\r\nTheme: O\'chirildi\r\n\r\n');
-      } else {
-        term.write('\r\nNoma\'lum theme: ' + theme + '\r\n');
-        term.write('Mavjud: anime, force, jjk, off\r\n\r\n');
-      }
-    },
-    konami: () => {
-      document.body.style.transition = 'filter 0.5s';
-      document.body.style.filter = 'hue-rotate(180deg) saturate(3)';
-      const overlay = document.getElementById('eggOverlay');
-      if (!document.querySelector('.konami-rainbow')) {
-        overlay.innerHTML += '<span class="konami-rainbow">🌈</span>';
-      }
-      term.write('\r\n');
-      term.write('   ↑↑↓↓←→←→BA\r\n');
-      term.write('Konami kodi ishga tushdi!\r\n');
-      term.write('   (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧\r\n\r\n');
-    },
-    anime: () => {
-      document.body.classList.add('anime-mode');
-      const overlay = document.getElementById('eggOverlay');
-      if (!document.querySelector('.anime-stars')) {
-        overlay.innerHTML += '<span class="anime-stars">✨⭐🌟</span>';
-      }
-      term.write('\r\n');
-      term.write('   (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ ANIME MODE ✧ﾟ･: *ヽ(◕ヮ◕ヽ)\r\n');
-      term.write('Anime rejimi yoqildi!\r\n');
-      term.write('   ┌( ಠ‿ಠ)┘\r\n\r\n');
-    },
-    force: () => {
-      document.body.classList.add('force-mode');
-      const overlay = document.getElementById('eggOverlay');
-      if (!document.querySelector('.force-lightning')) {
-        overlay.innerHTML += '<span class="force-lightning">⚡</span>';
-      }
-      term.write('\r\n');
-      term.write('   ⚡ FORCE MODE ⚡\r\n');
-      term.write('Kuch rejimi yoqildi!\r\n');
-      term.write('   (ง •̀_•́)ง\r\n\r\n');
-    },
-    jjk: () => {
-      document.body.classList.add('jjk-mode');
-      const overlay = document.getElementById('eggOverlay');
-      if (!document.querySelector('.jjk-orbs')) {
-        overlay.innerHTML += '<span class="jjk-orbs">🌀</span>';
-      }
-      term.write('\r\n');
-      term.write('   🌀 JUJUTSU KAISEN 🌀\r\n');
-      term.write('Gojo purple rejimi yoqildi!\r\n');
-      term.write('   (눈_눈)\r\n\r\n');
-    },
-    '42': () => {
-      const overlay = document.getElementById('eggOverlay');
-      if (!document.querySelector('.falling-42')) {
-        overlay.innerHTML += '<span class="falling-42">42</span>';
-      }
-      term.write('\r\n');
-      term.write('   42\r\n');
-      term.write('   The answer to life, the universe, and everything.\r\n');
-      term.write('   ( ͡° ͜ʖ ͡°)\r\n\r\n');
-    },
-    '67': () => {
-      const stage = document.getElementById('siteStage');
-      document.body.classList.remove('move67-mode');
-      void stage.offsetWidth;
-      document.body.classList.add('move67-mode');
-      term.write('\r\n');
-      term.write('   67 SHAKE MODE\r\n');
-      term.write('67 tebranish!\r\n');
-      term.write('   (╯°□°）╯︵ ┻━┻\r\n\r\n');
-    }
-  };
-
-  term.onData(data => {
-    if (data === '\r' || data === '\n') {
-      term.write('\r\n');
-      const cmd = commandBuffer.trim();
-      if (cmd) {
-        history.push(cmd);
-        historyIndex = -1;
-        const parts = cmd.split(' ');
-        const command = parts[0].toLowerCase();
-        const args = parts.slice(1);
-        if (commands[command]) {
-          commands[command](args);
-        } else {
-          term.write(`\r\nbuyruq topilmadi: ${command}\r\n`);
-          term.write('help yozing yordam uchun.\r\n\r\n');
-        }
-      }
-      commandBuffer = '';
-      term.write('mahmud@portfolio:~$ ');
-    } else if (data === '\x7f') { // Backspace
-      if (commandBuffer.length > 0) {
-        commandBuffer = commandBuffer.slice(0, -1);
-        term.write('\b \b');
-      }
-    } else if (data === '\x1b[A') { // Up arrow
-      if (history.length > 0) {
-        if (historyIndex === -1) historyIndex = history.length - 1;
-        else if (historyIndex > 0) historyIndex--;
-        const len = commandBuffer.length;
-        for (let i = 0; i < len; i++) term.write('\b \b');
-        commandBuffer = history[historyIndex];
-        term.write(commandBuffer);
-      }
-    } else if (data === '\x1b[B') { // Down arrow
-      if (historyIndex >= 0) {
-        historyIndex++;
-        const len = commandBuffer.length;
-        for (let i = 0; i < len; i++) term.write('\b \b');
-        if (historyIndex < history.length) {
-          commandBuffer = history[historyIndex];
-        } else {
-          commandBuffer = '';
-          historyIndex = -1;
-        }
-        term.write(commandBuffer);
-      }
-    } else {
-      commandBuffer += data;
-      term.write(data);
-    }
-  });
-})();
-</script>
+<script src="script.js"></script>
 </body>
 </html>
- 
