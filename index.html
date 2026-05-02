@@ -6,7 +6,7 @@
 <title>MAHMUD ULASHEV.EXE — Portfolio</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%23FFD700'/><rect x='2' y='2' width='12' height='12' fill='%23000'/><rect x='4' y='4' width='2' height='8' fill='%23FFD700'/><rect x='8' y='4' width='2' height='8' fill='%23FFD700'/><rect x='6' y='6' width='4' height='2' fill='%23FFD700'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/xterm@5.3.0/css/xterm.css">
 
 <script src="https://unpkg.com/xterm@5.3.0/lib/xterm.js"></script>
@@ -387,7 +387,7 @@ body{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' wi
 #terminal-container .xterm,
 #terminal-container .xterm-helpers,
 #terminal-container .xterm-screen {
-  font-family:Menlo, Consolas, 'Courier New', monospace !important;
+  font-family:'Roboto Mono', Roboto, Menlo, Consolas, 'Courier New', monospace !important;
   color:#D6FCFF !important;
   background:#02060b !important;
   line-height:1.5 !important;
@@ -867,7 +867,7 @@ body.force-mode #hero::after{
 <section id="terminal">
   <h2 class="sec-title reveal" style="justify-content:center;">LINUX TERMINAL</h2>
   <p style="color:var(--muted);font-size:7px;margin-bottom:20px;text-align:center;">
-    BUYRUQLARNI KIRITING · 'help' UCHUN YORDAM
+    BUYRUQLARNI KIRITING · 'help' YORDAM UCHUN
   </p>
   <div id="terminal-container" style="border:4px solid var(--y);box-shadow:6px 6px 0 var(--ya);background:#000;padding:16px;"></div>
 </section>
@@ -1495,7 +1495,7 @@ revealEls.forEach(el=>revObs.observe(el));
 (function(){
   const term = new Terminal({
     cursorBlink: true,
-    fontFamily: '"Press Start 2P", monospace',
+    fontFamily: '"Roboto Mono", "Press Start 2P", monospace',
     fontSize: 12,
     cols: 80,
     rows: 24,
