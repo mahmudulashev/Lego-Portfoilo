@@ -135,6 +135,9 @@ const PROJS={
   ilmla:{title:'DARAJA 02 — ILMLA',body:'O\'zbek auditoriyasiga mo\'ljallangan ta\'lim platformasi. Web dizayn strategik konsalting bilan birlashtirilib, ishlaydigan va konversiya beradigan mahsulot yaratildi.',link:'https://ilmla.uz'},
   uztitr:{title:'DARAJA 03 — UZTITR FILMLAR',body:'O\'zbek filmlari va seriallari uchun to\'liq ma\'lumotlar bazasi. Foydalanuvchilar janr, reyting va til bo\'yicha saralay oladi. Maxsus server-side backend asosida qurilgan.',link:'https://uztitr.uz'},
   wallet:{title:'DARAJA 04 — MY WALLET',body:'Raqamli hamyon mahsuloti uchun konversiyaga yo\'naltirilgan landing sahifa. Aniq UI, to\'liq moslashuvchan tuzilma va Vercel orqali deploy qilingan.',link:'https://my-wallet-dusky.vercel.app/'},
+  eimkon:{title:'DARAJA 05 — E-IMKON',body:'Biznes va xizmatlar uchun zamonaviy veb-sayt. Moslashuvchan dizayn va foydalanuvchi tajribasiga e\'tibor qaratilgan. O\'zbek bozori uchun optimallashtirilgan.',link:'https://www.e-imkon.uz'},
+  managemoney:{title:'DARAJA 06 — MANAGE MONEY',body:'Pul boshqarish uchun neon uslubidagi zamonaviy ilova. Moliyaviy ma\'lumotlarni vizualizatsiya qilish va boshqarish imkoniyatlari. Vercel platformasida joylangan.',link:'https://manage-money-neon.vercel.app'},
+  quizo:{title:'DARAJA 07 — QUIZO',body:'Interaktiv viktorina platformasi. Foydalanuvchilar uchun qiziqarli va ta\'limiy savollar. O\'zbek va xalqaro mavzular bilan boyitilgan.',link:'https://quizo.uz'},
 };
 function openDlg(k){
   const p=PROJS[k];
